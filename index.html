@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Alginne | Animated Portfolio</title>
+
+    <style>
+        :root {
+            --bg: #080808;
+            --bg2: #160707;
+            --card: rgba(255,255,255,0.07);
+            --gold: #ff3333;
+            --pink: #ff5a5f;
+            --white: #fff5f5;
+            --muted: #c9b8b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: var(--white);
+            background: var(--bg);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ANIMATED BACKGROUND */
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(
+                125deg, #080808, #2b0508,
+                #5b0b12, #080808
+            );
+            background-size: 400% 400%;
+            animation: gradientMove 16s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(65px);
+            opacity: 0.25;
+            z-index: -1;
+            pointer-events: none;
+            animation: orbMove 12s ease-in-out infinite alternate;
+        }
+
+        .orb1 {
+            width: 320px;
+            height: 320px;
+            background: #e01828;
+            top: 10%;
+            left: -100px;
+        }
+
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            background: #8f101b;
+            right: -130px;
+            bottom: 10%;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbMove {
+            from { transform: translate(0, 0); }
+            to { transform: translate(60px, -80px); }
+        }
+
+        /* PARTICLES */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rise linear infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            15% { opacity: 0.7; }
+            85% { opacity: 0.7; }
+            100% {
+                transform: translateY(-110vh);
+                opacity: 0;
+            }
+        }
+
+        /* NAVIGATION */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(8,8,8,0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav {
+            max-width: 1150px;
+            margin: auto;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            max-width: 1150px;
+            margin: auto;
+            padding: 130px 25px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hello {
+            color: var(--gold);
+            font-weight: bold;
+            letter-spacing: 3px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5.5vw, 70px);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(
+                90deg, #ff3333, #ff6666, #b31224
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .typing-line {
+            font-size: clamp(18px, 2.5vw, 26px);
+            min-height: 42px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .cursor {
+            display: inline-block;
+            border-right: 3px solid var(--pink);
+            padding-right: 3px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .hero-description {
+            max-width: 550px;
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 27px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(
+                120deg, #b80f1f, #ff3333
+            );
+            color: #160707;
+            box-shadow: 0 0 25px rgba(255,51,51,0.25);
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid var(--pink);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,51,51,0.30);
+        }
+
+        /* FLOATING PROFILE PHOTO */
+        .photo-container {
+            flex: 0 0 330px;
+            position: relative;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .photo-ring {
+            width: 330px;
+            height: 330px;
+            padding: 8px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #c92626, #ff5a5f,
+                #ff7777, #ff3333
+            );
+            box-shadow: 0 0 50px rgba(255,51,51,0.30);
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 7px solid #160707;
+            background: #24090c;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(255,51,51,0.20); }
+            to { box-shadow: 0 0 65px rgba(255,51,51,0.50); }
+        }
+
+        /* SECTIONS */
+        section {
+            scroll-margin-top: 100px;
+        }
+
+        .section {
+            max-width: 1150px;
+            margin: auto;
+            padding: 85px 25px;
+        }
+
+        .section-label {
+            color: var(--pink);
+            letter-spacing: 3px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 42px);
+            margin: 10px 0 35px;
+        }
+
+        .section-title span {
+            color: var(--gold);
+        }
+
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 35px;
+            transition: 0.4s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255,51,51,0.50);
+            transform: translateY(-7px);
+        }
+
+        .glass-card p {
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        /* SKILLS AND PROJECTS */
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+        }
+
+        .skill-icon {
+            font-size: 36px;
+            margin-bottom: 14px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover .skill-icon {
+            transform: rotate(-12deg) scale(1.2);
+        }
+
+        .glass-card h3 {
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .project-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: rgba(255,51,51,0.20);
+            margin-bottom: 10px;
+        }
+
+        /* CONTACT */
+        .contact-card {
+            text-align: center;
+            background: linear-gradient(
+                135deg,
+                rgba(110,8,18,0.50),
+                rgba(25,8,10,0.55)
+            );
+        }
+
+        .contact-card h3 {
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .contact-card a {
+            color: var(--gold);
+            overflow-wrap: anywhere;
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(45px);
+            transition: opacity 0.8s ease,
+                        transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* BACK TO TOP */
+        #topBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: var(--gold);
+            color: #160707;
+            font-size: 23px;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: 0.3s;
+        }
+
+        #topBtn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 800px) {
+            nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding-top: 180px;
+                gap: 45px;
+            }
+
+            .photo-container {
+                flex: initial;
+            }
+
+            .photo-ring {
+                width: 240px;
+                height: 240px;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .section {
+                padding: 65px 22px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MOVING BACKGROUND -->
+    <div class="background" aria-hidden="true"></div>
+    <div class="orb orb1" aria-hidden="true"></div>
+    <div class="orb orb2" aria-hidden="true"></div>
+    <div class="particles" id="particles"
+         aria-hidden="true"></div>
+
+    <!-- NAVIGATION -->
+    <header>
+        <nav>
+            <a href="#home" class="logo">AM ✦</a>
+
+            <div class="nav-links">
+                <a href="#home">HOME</a>
+                <a href="#about">ABOUT</a>
+                <a href="#skills">SKILLS</a>
+                <a href="#projects">PROJECTS</a>
+                <a href="#contact">CONTACT</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HOME -->
+        <section class="hero" id="home">
+
+            <div class="hero-text">
+
+                <p class="hello">
+                    ✦ WELCOME TO MY PORTFOLIO ✦
+                </p>
+
+                <h1>
+                    Hello, I'm<br>
+                    <span class="gradient-text">
+                        ALGINNE A. MENDOZA
+                    </span>
+                </h1>
+
+                <div class="typing-line">
+                    <span id="typing"></span>
+                    <span class="cursor"
+                          aria-hidden="true"></span>
+                </div>
+
+                <p class="hero-description">
+                    A student of Ilocos Sur Polytechnic State College (ISPSC) who is passionate about learning, teaching, and exploring the world of technology. I am dedicated to personal growth and making a positive impact through education and creativity.
+                </p>
+
+                <div class="buttons">
+                    <a href="#about"
+                       class="btn btn-primary">
+                        Discover More 
+                    </a>
+
+                    <a href="#contact"
+                       class="btn btn-outline">
+                        Contact Me
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- YOUR PROFILE PICTURE -->
+            <div class="photo-container">
+                <div class="photo-ring">
+                    <img
+                    src="profile.png"
+                    alt="Portrait of Alginne Mendoza"
+                    class="profile-photo">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ABOUT -->
+        <section class="section reveal" id="about">
+
+            <p class="section-label">Get to Know Me</p>
+
+            <h2 class="section-title">
+                About <span>Me</span>
+            </h2>
+
+            <div class="glass-card">
+
+                <h3>Welcome to My World!</h3>
+
+                <p>
+                    Hello! My name is Alginne A. Mendoza, and I am 22 years old, born on October 24, 2004. I currently live in Santa Maria, Ilocos Sur, and I am a first-year Information Technology (IT) student at Ilocos Sur Polytechnic State College. I am someone who is eager to learn, explore new things, and develop my knowledge and skills, especially in the field of technology.
+                </p>
+                <p>
+                    I completed my elementary education at Darapidap Elementary School in Candon City, Ilocos Sur, and graduated from Narvacan National Central High School. As I continue my college journey, I look forward to gaining new experiences, improving my abilities, and learning more about the world of Information Technology. This digital portfolio represents my learning progress, activities, and achievements as an IT student.
+                </p>
+
+
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section reveal" id="skills">
+
+            <p class="section-label">What I Do</p>
+
+            <h2 class="section-title">
+                My <span>Skills</span>
+            </h2>
+
+            <div class="grid">
+
+                <div class="glass-card">
+                    <div class="skill-icon"></div>
+                    <h3>GAMING</h3>
+                    <p>
+                        Engaging in various
+                        video games to enhance
+                        strategic thinking and problem-solving skills.
+                    </p>
+                </div>
+
+
+                <div class="glass-card">
+                    <div class="skill-icon"></div>
+                    <h3>TECHNOLOGY</h3>
+                    <p>
+                        Exploring HTML, CSS,
+                        and digital tools
+                        for future works.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="skill-icon"></div>
+                    <h3>CREATIVITY</h3>
+                    <p>
+                        Designing engaging
+                        presentations and create 
+                        visually appealing assignments and activities.  
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="skill-icon"></div>
+                    <h3>COMMUNICATION</h3>
+                    <p>
+                        Expressing ideas clearly
+                        and effectively with my classmates
+                        and peers.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="section reveal" id="projects">
+
+            <p class="section-label">Things I've Created</p>
+
+            <h2 class="section-title">
+                My <span>Projects</span>
+            </h2>
+
+            <div class="grid">
+
+                <div class="glass-card">
+                    <div class="project-number">01</div>
+                    <h3>Personal Portfolio</h3>
+                    <p>
+                        My personal animated website
+                        created using HTML,
+                        CSS, and JavaScript.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="section reveal" id="contact">
+
+            <p class="section-label">Let's Connect</p>
+
+            <h2 class="section-title">
+                Contact <span>Me</span>
+            </h2>
+
+            <div class="glass-card contact-card">
+
+                <h3>Let's do something meaningful </h3>
+
+                <p>
+                    Feel free to reach out to me
+                    for academic collaboration.
+                </p>
+
+                <p>
+                    📧 Email:
+                    <a href="mailto:alginnemendoza05@gmail.com">
+                        alginnemendoza05@gmail.com
+                    </a>
+                </p>
+
+                <p>
+                    🌐 Facebook:
+                    ALGINNE ATIENZA MENDOZA
+                </p>
+
+                <br>
+
+                <a href="mailto:alginnemendoza05@gmail.com"
+                   class="btn btn-primary">
+                    Send Me an Email ✉
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © <span id="year">2026</span>
+            ALGINNE ATIENZA MENDOZA
+        </p>
+        <p>
+            Made with using HTML, CSS & JavaScript
+        </p>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button id="topBtn"
+            aria-label="Back to top"
+            title="Back to top">
+        ↑
+    </button>
+
+    <script>
+
+        /* TYPING ANIMATION */
+        const words = [
+            "A Creative Thinker ✨",
+            "A Problem Solver 🧩",
+            "A Team Player 🤝",
+        ];
+
+        const typingElement =
+            document.getElementById("typing");
+
+        const reduceMotion =
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+
+        let wordIndex = 0;
+        let letterIndex = 0;
+        let deleting = false;
+
+        function typeEffect() {
+            const word = words[wordIndex];
+
+            if (!deleting) {
+                letterIndex++;
+            } else {
+                letterIndex--;
+            }
+
+            typingElement.textContent =
+                Array.from(word)
+                    .slice(0, letterIndex)
+                    .join("");
+
+            let speed = deleting ? 60 : 110;
+
+            if (letterIndex === Array.from(word).length) {
+                deleting = true;
+                speed = 1600;
+            }
+
+            if (letterIndex === 0 && deleting) {
+                deleting = false;
+                wordIndex =
+                    (wordIndex + 1) % words.length;
+                speed = 400;
+            }
+
+            setTimeout(typeEffect, speed);
+        }
+
+        if (reduceMotion) {
+            typingElement.textContent = words[0];
+        } else {
+            typeEffect();
+        }
+
+        /* FLOATING PARTICLES */
+        const particleContainer =
+            document.getElementById("particles");
+
+        if (!reduceMotion) {
+            for (let i = 0; i < 30; i++) {
+                const particle =
+                    document.createElement("span");
+
+                particle.className = "particle";
+
+                particle.style.left =
+                    Math.random() * 100 + "%";
+
+                particle.style.top =
+                    Math.random() * 100 + 100 + "vh";
+
+                particle.style.animationDuration =
+                    (8 + Math.random() * 12) + "s";
+
+                particle.style.animationDelay =
+                    (-Math.random() * 20) + "s";
+
+                particle.style.width =
+                    (2 + Math.random() * 4) + "px";
+
+                particle.style.height =
+                    particle.style.width;
+
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        /* SCROLL REVEAL */
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+        if ("IntersectionObserver" in window &&
+            !reduceMotion) {
+
+            const observer =
+                new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList
+                                    .add("visible");
+                                observer.unobserve(
+                                    entry.target
+                                );
+                            }
+                        });
+                    },
+                    { threshold: 0.1 }
+                );
+
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+
+        } else {
+            revealElements.forEach(element => {
+                element.classList.add("visible");
+            });
+        }
+
+        /* BACK TO TOP BUTTON */
+        const topBtn =
+            document.getElementById("topBtn");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 350) {
+                topBtn.classList.add("show");
+            } else {
+                topBtn.classList.remove("show");
+            }
+        }, { passive: true });
+
+        topBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: reduceMotion ? "auto" : "smooth"
+            });
+        });
+
+        /* ACTIVE NAVIGATION */
+        const sections =
+            document.querySelectorAll("main section");
+
+        const navLinks =
+            document.querySelectorAll(".nav-links a");
+
+        window.addEventListener("scroll", () => {
+            let current = "home";
+
+            sections.forEach(section => {
+                if (window.scrollY >=
+                    section.offsetTop - 180) {
+                    current = section.id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") ===
+                    "#" + current
+                );
+            });
+        }, { passive: true });
+
+        /* AUTOMATIC YEAR */
+        document.getElementById("year")
+            .textContent =
+            new Date().getFullYear();
+
+    </script>
+
+</body>
+</html>
